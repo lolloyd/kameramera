@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply min-h-screen bg-navy-900 text-white antialiased;
+  background-image: linear-gradient(135deg, #1b2a4a, #0b1226);
+  background-attachment: fixed;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-kame-blue/60 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-kame-yellow text-navy-900 hover:brightness-110 active:scale-95;
+  }
+  .btn-secondary {
+    @apply btn border border-kame-blue/50 bg-navy-700 text-white hover:border-kame-cyan active:scale-95;
+  }
+  .card {
+    @apply rounded-3xl border border-white/10 bg-navy-700/80 p-5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
