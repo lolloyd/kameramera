@@ -79,17 +79,33 @@ export default function EventsManager() {
     await load();
   };
 
+  const [exporting, setExporting] = useState(false);
+
   const exportZip = async (event: EventRecord) => {
+    setExporting(true);
     setStatus('Preparing ZIP…');
     try {
-      const { photos, originals } = await exportEventZip(event);
+      const result = await exportEventZip(event, (done, total) => setStatus(`Exporting photo ${done} of ${total}…`));
+      if (result.cancelled) {
+        setStatus('Export cancelled.');
+      } else if (!result.photos) {
+        setStatus('This event has no photos yet.');
+      } else {
+        const what = `${result.photos} photo${result.photos === 1 ? '' : 's'} and ${result.originals} original picture${result.originals === 1 ? '' : 's'}`;
+        setStatus(
+          result.parts > 1
+            ? `Exported ${what} in ${result.parts} ZIP files. If only one downloaded, allow multiple downloads for this site and try again.`
+            : `Exported ${what}.`,
+        );
+      }
+    } catch (e) {
       setStatus(
-        photos
-          ? `Exported ${photos} photo${photos === 1 ? '' : 's'} and ${originals} original picture${originals === 1 ? '' : 's'} (in the originals folder).`
-          : 'This event has no photos yet.',
+        e instanceof DOMException && e.name === 'QuotaExceededError'
+          ? 'Not enough disk space for the ZIP. Free up space or choose another drive.'
+          : 'Could not create the ZIP. Try again, or use Chrome or Edge on a computer for large events.',
       );
-    } catch {
-      setStatus('Could not create the ZIP. The event may be too large for this browser.');
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -174,7 +190,7 @@ export default function EventsManager() {
                   <button type="button" className="btn-secondary px-4 py-2 text-sm" onClick={() => setView({ kind: 'edit', event })}>
                     Edit
                   </button>
-                  <button type="button" className="btn-secondary px-4 py-2 text-sm" onClick={() => void exportZip(event)}>
+                  <button type="button" className="btn-secondary px-4 py-2 text-sm" disabled={exporting} onClick={() => void exportZip(event)}>
                     Export ZIP
                   </button>
                   {confirmId === event.id ? (

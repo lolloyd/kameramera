@@ -291,6 +291,11 @@ maria-jon-s-wedding-2026-10-27.zip
 
 Originals are the camera captures before any layout, filter, frame or stickers. They are what clients usually ask for.
 
+| Browser | How the export is saved |
+|---|---|
+| **Chrome / Edge (desktop)** | A save dialog opens, and the ZIP is streamed straight to disk with progress shown. Works for events of any size. |
+| **Other browsers** | Downloaded automatically, split into ZIPs of about 400 MB (`…-part1-of-3.zip`). A photo and its originals always stay in the same part. |
+
 ---
 
 ## Never losing a photo
@@ -447,7 +452,7 @@ src/
 ## Limitations and tips
 
 - **Photos live in the browser** that took them, so use the same browser profile and the same web address for the whole event. Clearing site data deletes everything. **Export each event's ZIP afterwards.**
-- **Very large events** may be too big to export as one ZIP in some browsers, because the ZIP is built in memory.
+- **Large events export safely.** In Chrome and Edge on a computer, **Export ZIP** asks where to save and writes the ZIP straight to disk one photo at a time, so event size isn't limited by memory. Other browsers download the event in parts of about 400 MB (`…-part1-of-3.zip`). Allow multiple downloads for the site if the browser asks.
 - **The print counter** increases when the print window opens. The browser cannot report whether the job was actually printed or cancelled.
 - **Close other tabs of the app** after an update so the storage upgrade can finish.
 - For long events, **install the app** (browser menu → *Install Kameramera*). This makes it run full-screen and helps keep storage protected.

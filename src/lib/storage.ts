@@ -168,6 +168,17 @@ export async function countPhotos(eventId: number): Promise<number> {
   return db.countFromIndex('photos', 'by-event', eventId);
 }
 
+/** Photo ids of an event, oldest first, so large exports can load one photo at a time. */
+export async function listPhotoIds(eventId: number): Promise<number[]> {
+  const db = await getDb();
+  return (await db.getAllKeysFromIndex('photos', 'by-event', eventId)).sort((a, b) => a - b);
+}
+
+export async function getPhoto(id: number): Promise<GalleryItem | undefined> {
+  const db = await getDb();
+  return db.get('photos', id);
+}
+
 export async function deletePhoto(id: number): Promise<void> {
   const db = await getDb();
   await db.delete('photos', id);
